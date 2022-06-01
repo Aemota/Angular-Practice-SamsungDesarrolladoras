@@ -1,0 +1,122 @@
+<div class="formulario">
+  <form (ngSubmit)="registrar()" [formGroup]="contactform">
+    <br>
+    <h1 class="h1">FORMULARIO</h1>
+    <br>
+
+    <!-- Nombre -->
+
+    <mat-form-field appearance="fill" class="inputs" hintLabel="Min 3 caracteres">
+      <mat-label>Nombre</mat-label>
+      <input matInput type="text" autocomplete="off" required name="nombre" formControlName="nombre">
+      <mat-error *ngIf="contactform.get('nombre')?.touched && contactform.get('nombre')?.errors?.['required']">Este
+        campo es obligatorio</mat-error>
+      <mat-error *ngIf="contactform.get('nombre')?.errors?.['minlength']">Inserta al menos
+        {{contactform.get('nombre')?.errors?.['minlength']?.requiredLength}} caracteres</mat-error>
+    </mat-form-field>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <!-- Apellidos -->
+
+    <mat-form-field appearance="fill" class="inputs" hintLabel="Min 3 caracteres">
+      <mat-label>Apellidos</mat-label>
+      <input matInput autocomplete="off" required name="apellidos" formControlName="apellidos">
+      <mat-error *ngIf="contactform.get('apellidos')?.touched && contactform.get('apellidos')?.errors?.['required']">
+        Este campo es obligatorio</mat-error>
+      <mat-error *ngIf="contactform.get('apellidos')?.errors?.['minlength']">Inserta al menos
+        {{contactform.get('apellidos')?.errors?.['minlength']?.requiredLength}} caracteres</mat-error>
+    </mat-form-field>
+    <br>
+
+    <!-- EDAD -->
+
+    <mat-form-field hintLabel="Min 0 / Max 125" appearance="fill" class="inputs">
+      <mat-label>Edad</mat-label>
+      <input matInput type="number" required autocomplete="off" name="edad" formControlName="edad">
+      <mat-error *ngIf="contactform.get('edad')?.touched && contactform.get('edad')?.errors?.['required']">Este campo es
+        obligatorio</mat-error>
+      <mat-error *ngIf="contactform.get('edad')?.errors?.['min'] || contactform.get('edad')?.errors?.['max']">Edad
+        comprendida entre 0 y 125 años</mat-error>
+    </mat-form-field>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <!-- DNI -->
+
+    <mat-form-field hintLabel="9 caracteres" appearance="fill" class="inputs">
+      <mat-label>DNI</mat-label>
+      <input matInput required autocomplete="off" name="dni" formControlName="dni" placeholder="Ejemplo: 12345678F">
+      <mat-error *ngIf="contactform.get('dni')?.touched && contactform.get('dni')?.errors?.['required']">Este campo es
+        obligatorio</mat-error>
+    </mat-form-field>
+    <br><br>
+
+    <!-- CUMPLEAÑOS -->
+
+    <mat-form-field appearance="fill" class="inputs">
+      <mat-label>Cumpleaños</mat-label>
+      <input matInput type="date" required name="cumple" formControlName="cumple">
+      <mat-error *ngIf="contactform.get('cumple')?.touched && contactform.get('cumple')?.errors?.['required']">Este
+        campo es obligatorio</mat-error>
+    </mat-form-field>
+    <br>
+
+    <!-- COLOR FAVORITO -->
+
+    <mat-form-field appearance="fill" class="inputs" hintLabel="Min 3 caracteres">
+      <mat-label>Color Favorito</mat-label>
+      <input matInput autocomplete="off" required name="colorfav" formControlName="colorfav">
+      <mat-error *ngIf="contactform.get('colorfav')?.touched && contactform.get('colorfav')?.errors?.['required']">Este
+        campo es obligatorio</mat-error>
+      <mat-error *ngIf="contactform.get('colorfav')?.errors?.['minlength']">Inserta al menos
+        {{contactform.get('colorfav')?.errors?.['minlength']?.requiredLength}} caracteres</mat-error>
+    </mat-form-field>
+    <br />
+
+    <!-- GÉNERO -->
+
+    <mat-form-field appearance="fill" class="inputs">
+      <mat-label>Género</mat-label>
+      <select matNativeControl required name="genero" formControlName="genero">
+        <option disabled selected></option>
+        <option value="Femenino">Femenino</option>
+        <option value="Masculino">Masculino</option>
+        <option value="Otro">Otro</option>
+        <option value="No especificado">No especificado</option>
+      </select>
+      <mat-error *ngIf="contactform.get('genero')?.touched && contactform.get('genero')?.errors?.['required']">Este
+        campo es obligatorio</mat-error>
+    </mat-form-field><br>
+
+    <!-- BOTÓN ENVIAR -->
+
+    <mat-label>
+      <button type="submit" mat-raised-button [disabled]="!contactform.valid" color="primary">Registrar</button>
+    </mat-label>
+    <br><br>
+
+  </form>
+</div>
+
+
+<!-- REGISTROS -->
+
+<mat-list *ngIf="contactform.valid">
+  <mat-list-item *ngFor="let u of usuarios">
+    <div class="div-datos">
+      <span > Nombre: {{ u == newUsuario ? contactform.value.nombre : u.nombre }} | </span>
+      <span > Apellidos: {{ u == newUsuario ? contactform.value.apellidos : u.apellidos }} | </span>
+      <span > Edad: {{ u == newUsuario ? contactform.value.edad : u.edad }} | </span>
+      <span > DNI: {{ u == newUsuario ? contactform.value.dni : u.dni }} | </span>
+      <span > Cumpleaños: {{ u == newUsuario ? contactform.value.cumple : u.cumple | date:'dd-MM-yyyy'}} | </span>
+      <span > Color Favorito: {{ u == newUsuario ? contactform.value.colorfav : u.colorfav }} | </span>
+      <span > Género: {{ u == newUsuario ? contactform.value.genero : u.genero }} </span>
+    </div>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div>
+      <button mat-raised-button color="primary" (click)="u == newUsuario ? finModificar($event, u) : modificar($event, u)">{{ u == newUsuario ? "Hecho" : "Modificar" }}</button> &nbsp;
+      <button mat-raised-button color="warn" (click)="eliminar($event, u)">Eliminar</button>
+  </div>
+  </mat-list-item>
+</mat-list>
